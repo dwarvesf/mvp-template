@@ -1,0 +1,27 @@
+datasource db { 
+  provider = "postgresql"
+  url      = env("DATABASE_URL") 
+}
+
+generator client { 
+  provider = "prisma-client-js" 
+}
+
+model User {
+  id                 String               @id @default(cuid())
+  email              String               @unique
+  password           String?
+  name               String?
+  verified           Boolean              @default(false)
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  passwordResetToken PasswordResetToken[]
+}
+
+model PasswordResetToken {
+  id        String   @id @default(cuid())
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
