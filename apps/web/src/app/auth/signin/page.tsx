@@ -4,29 +4,37 @@ import { signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { GalleryVerticalEnd } from 'lucide-react';
+import { signInSchema, type SignInFormData } from '@/lib/validations/auth';
 
 function SignInForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/dashboard';
 
-  const handleCredentialsLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInFormData>({
+    resolver: zodResolver(signInSchema),
+  });
+
+  const onSubmit = async (data: SignInFormData) => {
     setIsLoading(true);
     setError('');
 
     try {
       const result = await signIn('credentials', {
-        email,
-        password,
+        email: data.email,
+        password: data.password,
         redirect: false,
       });
 
@@ -65,7 +73,7 @@ function SignInForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleCredentialsLogin}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button variant="outline" className="w-full" onClick={handleGitHubLogin} type="button" disabled={isLoading}>
@@ -95,10 +103,11 @@ function SignInForm() {
                       id="email"
                       type="email"
                       placeholder="m@example.com"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      required
+                      {...register('email')}
                     />
+                    {errors.email && (
+                      <p className="text-sm text-destructive">{errors.email.message}</p>
+                    )}
                   </div>
                   <div className="grid gap-2">
                     <div className="flex items-center">
@@ -113,10 +122,11 @@ function SignInForm() {
                     <Input 
                       id="password" 
                       type="password" 
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required 
+                      {...register('password')}
                     />
+                    {errors.password && (
+                      <p className="text-sm text-destructive">{errors.password.message}</p>
+                    )}
                   </div>
                   <Button type="submit" className="w-full" disabled={isLoading}>
                     {isLoading ? 'Signing in...' : 'Sign in'}

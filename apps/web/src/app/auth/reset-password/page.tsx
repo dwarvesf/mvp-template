@@ -3,15 +3,16 @@
 import { useState, useEffect, Suspense } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { GalleryVerticalEnd, CheckCircle, AlertTriangle } from 'lucide-react';
+import { resetPasswordSchema, type ResetPasswordFormData } from '@/lib/validations/auth';
 
 function ResetPasswordForm() {
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
@@ -19,25 +20,21 @@ function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
 
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ResetPasswordFormData>({
+    resolver: zodResolver(resetPasswordSchema),
+  });
+
   useEffect(() => {
     if (!token) {
       setError('Invalid or missing reset token');
     }
   }, [token]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-
-    if (password.length < 8) {
-      setError('Password must be at least 8 characters long');
-      return;
-    }
-
+  const onSubmit = async (data: ResetPasswordFormData) => {
     setIsLoading(true);
     setError('');
 
@@ -49,11 +46,11 @@ function ResetPasswordForm() {
         },
         body: JSON.stringify({ 
           token,
-          newPassword: password 
+          newPassword: data.password 
         }),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (response.ok) {
         setIsSuccess(true);
@@ -61,7 +58,7 @@ function ResetPasswordForm() {
           router.push('/auth/signin');
         }, 3000);
       } else {
-        setError(data.message || 'Failed to reset password. Please try again.');
+        setError(responseData.message || 'Failed to reset password. Please try again.');
       }
     } catch {
       setError('An error occurred. Please try again later.');
@@ -160,7 +157,7 @@ function ResetPasswordForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 {error && (
                   <div className="bg-destructive/15 border border-destructive/50 text-destructive px-3 py-2 rounded-lg text-sm">
@@ -175,10 +172,11 @@ function ResetPasswordForm() {
                       id="password"
                       type="password"
                       placeholder="Enter new password"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      required
+                      {...register('password')}
                     />
+                    {errors.password && (
+                      <p className="text-sm text-destructive">{errors.password.message}</p>
+                    )}
                   </div>
 
                   <div className="grid gap-2">
@@ -187,14 +185,15 @@ function ResetPasswordForm() {
                       id="confirmPassword"
                       type="password"
                       placeholder="Confirm new password"
-                      value={confirmPassword}
-                      onChange={(e) => setConfirmPassword(e.target.value)}
-                      required
+                      {...register('confirmPassword')}
                     />
+                    {errors.confirmPassword && (
+                      <p className="text-sm text-destructive">{errors.confirmPassword.message}</p>
+                    )}
                   </div>
                 </div>
 
-                <Button type="submit" className="w-full" disabled={isLoading || !password || !confirmPassword}>
+                <Button type="submit" className="w-full" disabled={isLoading}>
                   {isLoading ? 'Resetting...' : 'Reset password'}
                 </Button>
 

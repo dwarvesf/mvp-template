@@ -2,20 +2,30 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { GalleryVerticalEnd, Mail, CheckCircle } from 'lucide-react';
+import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/lib/validations/auth';
 
 export default function ForgotPasswordPage() {
-  const [email, setEmail] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState('');
+  const [submittedEmail, setSubmittedEmail] = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormData>({
+    resolver: zodResolver(forgotPasswordSchema),
+  });
+
+  const onSubmit = async (data: ForgotPasswordFormData) => {
     setIsLoading(true);
     setError('');
 
@@ -25,15 +35,16 @@ export default function ForgotPasswordPage() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: data.email }),
       });
 
-      const data = await response.json();
+      const responseData = await response.json();
 
       if (response.ok) {
+        setSubmittedEmail(data.email);
         setIsSubmitted(true);
       } else {
-        setError(data.message || 'An error occurred. Please try again.');
+        setError(responseData.message || 'An error occurred. Please try again.');
       }
     } catch {
       setError('Failed to send reset email. Please try again later.');
@@ -60,7 +71,7 @@ export default function ForgotPasswordPage() {
               </div>
               <CardTitle className="text-xl">Check your email</CardTitle>
               <CardDescription>
-                We've sent a password reset link to <strong>{email}</strong>
+                We've sent a password reset link to <strong>{submittedEmail}</strong>
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
@@ -74,7 +85,7 @@ export default function ForgotPasswordPage() {
                   className="w-full"
                   onClick={() => {
                     setIsSubmitted(false);
-                    setEmail('');
+                    setSubmittedEmail('');
                   }}
                 >
                   Try another email
@@ -110,7 +121,7 @@ export default function ForgotPasswordPage() {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit(onSubmit)}>
               <div className="grid gap-6">
                 {error && (
                   <div className="bg-destructive/15 border border-destructive/50 text-destructive px-3 py-2 rounded-lg text-sm">
@@ -124,10 +135,11 @@ export default function ForgotPasswordPage() {
                     id="email"
                     type="email"
                     placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    {...register('email')}
                   />
+                  {errors.email && (
+                    <p className="text-sm text-destructive">{errors.email.message}</p>
+                  )}
                 </div>
 
                 <Button type="submit" className="w-full" disabled={isLoading}>
