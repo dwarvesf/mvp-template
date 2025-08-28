@@ -1,0 +1,59 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "ui": "tui",
+  "globalDependencies": ["**/.env"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "prisma:generate"],
+      "outputs": [
+        "dist/**",
+        ".next/**",
+        "!.next/cache/**"
+      ],
+      "env": [
+        "NODE_ENV",
+        "NEXT_PUBLIC_API_URL",
+        "API_URL",
+        "NEXTAUTH_URL",
+        "DATABASE_URL"
+      ]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^build", "prisma:generate"]
+    },
+    "start": {
+      "dependsOn": ["build"],
+      "cache": false,
+      "persistent": true
+    },
+    "test": {
+      "outputs": ["coverage/**"],
+      "env": ["NODE_ENV"]
+    },
+    "lint": {
+      "outputs": []
+    },
+    "format": {
+      "outputs": []
+    },
+    "typecheck": {
+      "outputs": []
+    },
+    "prisma:generate": {
+      "outputs": ["node_modules/.prisma/**"],
+      "inputs": ["prisma/schema.prisma"]
+    },
+    "prisma:migrate": {
+      "cache": false,
+      "outputs": [],
+      "inputs": ["prisma/schema.prisma", "prisma/migrations/**"]
+    },
+    "codegen": {
+      "cache": false,
+      "outputs": ["packages/api-client/src/generated.ts"],
+      "dependsOn": ["@mvp-template/api#dev"]
+    }
+  }
+}

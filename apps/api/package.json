@@ -14,6 +14,9 @@
     "start": "nest start",
     "build": "nest build",
     "test": "jest --runInBand",
+    "lint": "eslint .",
+    "format": "prettier -w .",
+    "typecheck": "tsc --noEmit",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev"
   },

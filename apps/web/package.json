@@ -6,7 +6,10 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "test": "vitest run"
+    "test": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier -w .",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@react-email/components": "^0.5.1",

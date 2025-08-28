@@ -110,3 +110,5 @@ yarn.lock
 # Generated files
 generated/
 *.generated.*
+dist/
+.turbo

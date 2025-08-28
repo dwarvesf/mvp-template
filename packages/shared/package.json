@@ -27,7 +27,10 @@
   },
   "scripts": {
     "build": "tsc",
-    "typecheck": "tsc --noEmit"
+    "dev": "tsc --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier -w ."
   },
   "devDependencies": {
     "typescript": "^5.5.4"
