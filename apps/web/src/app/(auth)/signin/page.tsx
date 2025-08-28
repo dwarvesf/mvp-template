@@ -71,7 +71,7 @@ function SignInForm() {
             <CardDescription>Sign in to your account to continue</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className="grid gap-6">
                 <div className="flex flex-col gap-4">
                   <Button
