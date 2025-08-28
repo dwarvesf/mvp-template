@@ -116,7 +116,7 @@ export default function Dashboard() {
                     Authentication Provider
                   </dt>
                   <dd className="mt-1 text-sm">
-                    {(session as any).accessToken ? 'Credentials' : 'OAuth'}
+                    {('accessToken' in session) ? 'Credentials' : 'OAuth'}
                   </dd>
                 </div>
               </dl>

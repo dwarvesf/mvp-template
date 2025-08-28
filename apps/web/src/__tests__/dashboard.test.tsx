@@ -5,7 +5,7 @@ import { SessionProvider } from 'next-auth/react';
 
 vi.mock('next-auth/react', () => ({
   useSession: vi.fn(() => ({ data: null, status: 'unauthenticated' })),
-  SessionProvider: ({ children }: any) => children,
+  SessionProvider: ({ children }: { children: React.ReactNode }) => children,
 }));
 
 describe('Dashboard', () => {

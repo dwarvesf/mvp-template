@@ -6,6 +6,7 @@ import {
   CreateUserSchema,
   VALIDATION_RULES,
 } from '@mvp-template/shared';
+import { ZodError } from 'zod';
 
 export const validateLoginForm = (email: string, password: string) => {
   const errors: Record<string, string> = {};
@@ -59,15 +60,23 @@ export const validateWithSchema = {
     try {
       const result = LoginSchema.parse(data);
       return { success: true, data: result, errors: {} };
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return {
+          success: false,
+          data: null,
+          errors: error.errors.reduce((acc: Record<string, string>, err) => {
+            if (err.path[0]) {
+              acc[err.path[0] as string] = err.message;
+            }
+            return acc;
+          }, {}),
+        };
+      }
       return {
         success: false,
         data: null,
-        errors:
-          error.errors?.reduce((acc: any, err: any) => {
-            acc[err.path[0]] = err.message;
-            return acc;
-          }, {}) || {},
+        errors: { general: 'Validation failed' },
       };
     }
   },
@@ -76,15 +85,23 @@ export const validateWithSchema = {
     try {
       const result = CreateUserSchema.parse(data);
       return { success: true, data: result, errors: {} };
-    } catch (error: any) {
+    } catch (error) {
+      if (error instanceof ZodError) {
+        return {
+          success: false,
+          data: null,
+          errors: error.errors.reduce((acc: Record<string, string>, err) => {
+            if (err.path[0]) {
+              acc[err.path[0] as string] = err.message;
+            }
+            return acc;
+          }, {}),
+        };
+      }
       return {
         success: false,
         data: null,
-        errors:
-          error.errors?.reduce((acc: any, err: any) => {
-            acc[err.path[0]] = err.message;
-            return acc;
-          }, {}) || {},
+        errors: { general: 'Validation failed' },
       };
     }
   },

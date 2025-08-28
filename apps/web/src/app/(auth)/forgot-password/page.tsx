@@ -8,7 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GalleryVerticalEnd, Mail, CheckCircle } from 'lucide-react';
+import { GalleryVerticalEnd, CheckCircle } from 'lucide-react';
 import { forgotPasswordSchema, type ForgotPasswordFormData } from '@/lib/validations/auth';
 
 export default function ForgotPasswordPage() {

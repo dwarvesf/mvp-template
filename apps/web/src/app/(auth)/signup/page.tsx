@@ -17,7 +17,7 @@ export default function SignUpPage() {
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState('');
   const [submittedEmail, setSubmittedEmail] = useState('');
-  const router = useRouter();
+  const _router = useRouter();
 
   const {
     register,

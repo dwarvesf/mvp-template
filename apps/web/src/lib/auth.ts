@@ -82,7 +82,10 @@ export const authOptions: NextAuthOptions = {
     },
     async session({ session, token }) {
       if (token.accessToken) {
-        (session as any).accessToken = token.accessToken;
+        return {
+          ...session,
+          accessToken: token.accessToken as string,
+        };
       }
       return session;
     },
