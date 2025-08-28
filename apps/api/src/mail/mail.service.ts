@@ -6,17 +6,12 @@ export class MailService {
   private resend: Resend | null;
 
   constructor() {
-    this.resend = process.env.RESEND_API_KEY
-      ? new Resend(process.env.RESEND_API_KEY)
-      : null;
+    this.resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
   }
 
   async sendVerificationEmail(to: string, userId: string) {
     if (!this.resend) {
-      console.log(
-        'Email service not configured. Would send verification email to:',
-        to,
-      );
+      console.log('Email service not configured. Would send verification email to:', to);
       return;
     }
 
@@ -27,7 +22,7 @@ export class MailService {
       to,
       subject: 'Verify your email',
       html: `
-        <h1>Welcome to MVP-TEMPLATE!</h1>
+        <h1>Welcome to MVP Template!</h1>
         <p>Please verify your email by clicking the link below:</p>
         <a href="${verificationUrl}">Verify Email</a>
       `,
@@ -36,10 +31,7 @@ export class MailService {
 
   async sendPasswordResetEmail(to: string, token: string) {
     if (!this.resend) {
-      console.log(
-        'Email service not configured. Would send reset email to:',
-        to,
-      );
+      console.log('Email service not configured. Would send reset email to:', to);
       return;
     }
 

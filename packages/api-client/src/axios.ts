@@ -6,7 +6,7 @@ declare module 'next-auth' {
   }
 }
 
-export const axiosInstance = async <T = any>(
+export const axiosInstance = async <T = unknown>(
   config: AxiosRequestConfig,
 ): Promise<AxiosResponse<T>> => {
   const instance = axios.create({

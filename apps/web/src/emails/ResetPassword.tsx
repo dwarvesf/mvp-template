@@ -19,7 +19,7 @@ export default function ResetPassword({ url }: ResetPasswordProps) {
   return (
     <Html>
       <Head />
-      <Preview>Reset your MVP-TEMPLATE password</Preview>
+      <Preview>Reset your MVP Template password</Preview>
       <Body style={main}>
         <Container style={container}>
           <Heading style={h1}>Password Reset Request</Heading>

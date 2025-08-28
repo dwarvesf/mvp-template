@@ -31,7 +31,7 @@ export class AuthService {
 
     await this.mailService.sendVerificationEmail(user.email, user.id);
 
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
 
@@ -52,7 +52,7 @@ export class AuthService {
     const payload = { sub: user.id, email: user.email };
     const accessToken = this.jwtService.sign(payload);
 
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return {
       user: userWithoutPassword,
       accessToken,
@@ -130,7 +130,7 @@ export class AuthService {
       throw new UnauthorizedException('User not found');
     }
 
-    const { password, ...userWithoutPassword } = user;
+    const { password: _password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
 }
