@@ -28,9 +28,10 @@ export const authOptions: NextAuthOptions = {
           }
 
           const { email, password } = credentialsSchema.parse(credentials);
-          
+
           // Use API_URL or NEXT_PUBLIC_API_URL for server-side
-          const apiUrl = process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
+          const apiUrl =
+            process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000';
           const loginUrl = `${apiUrl}/auth/login`;
           console.log('Attempting login to:', loginUrl);
           console.log('With email:', email);
@@ -42,7 +43,7 @@ export const authOptions: NextAuthOptions = {
           });
 
           console.log('Response status:', res.status);
-          
+
           if (!res.ok) {
             const errorText = await res.text();
             console.log('Login failed:', errorText);
@@ -51,7 +52,7 @@ export const authOptions: NextAuthOptions = {
 
           const data = await res.json();
           console.log('Login successful, user:', data.user.email);
-          
+
           return {
             id: data.user.id,
             email: data.user.email,
@@ -66,7 +67,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: '/auth/signin',
+    signIn: '/signin',
     error: '/auth/error',
   },
   session: {

@@ -13,7 +13,7 @@ export default function Dashboard() {
 
   useEffect(() => {
     if (status === 'loading') return;
-    if (!session) router.push('/auth/signin');
+    if (!session) router.push('/signin');
   }, [session, status, router]);
 
   if (status === 'loading') {
@@ -47,7 +47,8 @@ export default function Dashboard() {
                 Welcome back, {session.user?.name || session.user?.email?.split('@')[0]}!
               </CardTitle>
               <CardDescription>
-                Here's an overview of your dashboard. You can manage your account and access various features from here.
+                Here's an overview of your dashboard. You can manage your account and access various
+                features from here.
               </CardDescription>
             </CardHeader>
           </Card>
@@ -76,9 +77,7 @@ export default function Dashboard() {
                 <div className="text-2xl font-bold">
                   {session.user?.email ? 'Verified' : 'Pending'}
                 </div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  {session.user?.email}
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">{session.user?.email}</p>
               </CardContent>
             </Card>
 
@@ -89,9 +88,7 @@ export default function Dashboard() {
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">Today</div>
-                <p className="text-xs text-muted-foreground mt-1">
-                  Active session
-                </p>
+                <p className="text-xs text-muted-foreground mt-1">Active session</p>
               </CardContent>
             </Card>
           </div>
@@ -103,23 +100,17 @@ export default function Dashboard() {
                 <Shield className="h-5 w-5" />
                 Account Information
               </CardTitle>
-              <CardDescription>
-                Your account details and session information
-              </CardDescription>
+              <CardDescription>Your account details and session information</CardDescription>
             </CardHeader>
             <CardContent>
               <dl className="grid gap-4 md:grid-cols-2">
                 <div>
                   <dt className="text-sm font-medium text-muted-foreground">Full Name</dt>
-                  <dd className="mt-1 text-sm">
-                    {session.user?.name || 'Not provided'}
-                  </dd>
+                  <dd className="mt-1 text-sm">{session.user?.name || 'Not provided'}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-muted-foreground">Email Address</dt>
-                  <dd className="mt-1 text-sm">
-                    {session.user?.email || 'Not provided'}
-                  </dd>
+                  <dd className="mt-1 text-sm">{session.user?.email || 'Not provided'}</dd>
                 </div>
                 <div>
                   <dt className="text-sm font-medium text-muted-foreground">Session Expires</dt>
@@ -128,7 +119,9 @@ export default function Dashboard() {
                   </dd>
                 </div>
                 <div>
-                  <dt className="text-sm font-medium text-muted-foreground">Authentication Provider</dt>
+                  <dt className="text-sm font-medium text-muted-foreground">
+                    Authentication Provider
+                  </dt>
                   <dd className="mt-1 text-sm">
                     {(session as any).accessToken ? 'Credentials' : 'OAuth'}
                   </dd>

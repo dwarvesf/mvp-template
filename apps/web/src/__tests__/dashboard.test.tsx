@@ -1,6 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
-import Dashboard from '../app/dashboard/page';
+import Dashboard from '../app/(protected)/page';
 import { SessionProvider } from 'next-auth/react';
 
 vi.mock('next-auth/react', () => ({

@@ -44,9 +44,9 @@ function ResetPasswordForm() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           token,
-          newPassword: data.password 
+          newPassword: data.password,
         }),
       });
 
@@ -55,7 +55,7 @@ function ResetPasswordForm() {
       if (response.ok) {
         setIsSuccess(true);
         setTimeout(() => {
-          router.push('/auth/signin');
+          router.push('/signin');
         }, 3000);
       } else {
         setError(responseData.message || 'Failed to reset password. Please try again.');
@@ -77,26 +77,22 @@ function ResetPasswordForm() {
             </div>
             MVP-TEMPLATE
           </Link>
-          
+
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
                 <CheckCircle className="h-6 w-6 text-green-600" />
               </div>
               <CardTitle className="text-xl">Password reset successful!</CardTitle>
-              <CardDescription>
-                Your password has been reset successfully.
-              </CardDescription>
+              <CardDescription>Your password has been reset successfully.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <p className="text-sm text-muted-foreground text-center">
                 Redirecting you to sign in...
               </p>
-              
+
               <Button asChild className="w-full">
-                <Link href="/auth/signin">
-                  Go to sign in
-                </Link>
+                <Link href="/signin">Go to sign in</Link>
               </Button>
             </CardContent>
           </Card>
@@ -115,22 +111,18 @@ function ResetPasswordForm() {
             </div>
             MVP-TEMPLATE
           </Link>
-          
+
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-red-100 mb-4">
                 <AlertTriangle className="h-6 w-6 text-red-600" />
               </div>
               <CardTitle className="text-xl">Invalid reset link</CardTitle>
-              <CardDescription>
-                This password reset link is invalid or has expired.
-              </CardDescription>
+              <CardDescription>This password reset link is invalid or has expired.</CardDescription>
             </CardHeader>
             <CardContent>
               <Button asChild className="w-full">
-                <Link href="/auth/forgot-password">
-                  Request a new link
-                </Link>
+                <Link href="/forgot-password">Request a new link</Link>
               </Button>
             </CardContent>
           </Card>
@@ -148,13 +140,11 @@ function ResetPasswordForm() {
           </div>
           MVP-TEMPLATE
         </Link>
-        
+
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Reset your password</CardTitle>
-            <CardDescription>
-              Enter your new password below
-            </CardDescription>
+            <CardDescription>Enter your new password below</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -199,7 +189,7 @@ function ResetPasswordForm() {
 
                 <div className="text-center">
                   <Link
-                    href="/auth/signin"
+                    href="/signin"
                     className="text-sm underline-offset-4 hover:underline text-muted-foreground"
                   >
                     Back to sign in
@@ -216,28 +206,30 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <Suspense fallback={
-      <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
-        <div className="flex w-full max-w-sm flex-col gap-6">
-          <div className="flex items-center gap-2 self-center font-medium">
-            <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
-              <GalleryVerticalEnd className="size-4" />
-            </div>
-            MVP-TEMPLATE
-          </div>
-          <Card>
-            <CardContent className="p-6">
-              <div className="animate-pulse space-y-4">
-                <div className="h-4 bg-muted-foreground/20 rounded w-3/4"></div>
-                <div className="h-10 bg-muted-foreground/20 rounded"></div>
-                <div className="h-10 bg-muted-foreground/20 rounded"></div>
-                <div className="h-10 bg-muted-foreground/20 rounded"></div>
+    <Suspense
+      fallback={
+        <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-muted p-6 md:p-10">
+          <div className="flex w-full max-w-sm flex-col gap-6">
+            <div className="flex items-center gap-2 self-center font-medium">
+              <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+                <GalleryVerticalEnd className="size-4" />
               </div>
-            </CardContent>
-          </Card>
+              MVP-TEMPLATE
+            </div>
+            <Card>
+              <CardContent className="p-6">
+                <div className="animate-pulse space-y-4">
+                  <div className="h-4 bg-muted-foreground/20 rounded w-3/4"></div>
+                  <div className="h-10 bg-muted-foreground/20 rounded"></div>
+                  <div className="h-10 bg-muted-foreground/20 rounded"></div>
+                  <div className="h-10 bg-muted-foreground/20 rounded"></div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
         </div>
-      </div>
-    }>
+      }
+    >
       <ResetPasswordForm />
     </Suspense>
   );

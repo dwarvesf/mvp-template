@@ -1,7 +1,7 @@
-"use client"
+'use client';
 
-import * as React from "react"
-import { useSession } from "next-auth/react"
+import * as React from 'react';
+import { useSession } from 'next-auth/react';
 import {
   BarChart3,
   BookOpen,
@@ -10,133 +10,133 @@ import {
   Home,
   Settings,
   User,
-} from "lucide-react"
+} from 'lucide-react';
 
-import { NavMain } from "@/components/nav-main"
-import { NavProjects } from "@/components/nav-projects"
-import { NavUser } from "@/components/nav-user"
-import { TeamSwitcher } from "@/components/team-switcher"
+import { NavMain } from '@/components/nav-main';
+import { NavProjects } from '@/components/nav-projects';
+import { NavUser } from '@/components/nav-user';
+import { TeamSwitcher } from '@/components/team-switcher';
 import {
   Sidebar,
   SidebarContent,
   SidebarFooter,
   SidebarHeader,
   SidebarRail,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession()
-  
+  const { data: session } = useSession();
+
   const data = {
     user: {
-      name: session?.user?.name || session?.user?.email?.split('@')[0] || "User",
-      email: session?.user?.email || "",
-      avatar: session?.user?.image || "/avatars/default.jpg",
+      name: session?.user?.name || session?.user?.email?.split('@')[0] || 'User',
+      email: session?.user?.email || '',
+      avatar: session?.user?.image || '/avatars/default.jpg',
     },
     teams: [
       {
-        name: "MVP-TEMPLATE",
+        name: 'MVP-TEMPLATE',
         logo: GalleryVerticalEnd,
-        plan: "Development",
+        plan: 'Development',
       },
     ],
     navMain: [
       {
-        title: "Dashboard",
-        url: "/dashboard",
+        title: 'Dashboard',
+        url: '/',
         icon: Home,
         isActive: true,
         items: [
           {
-            title: "Overview",
-            url: "/dashboard",
+            title: 'Overview',
+            url: '/',
           },
           {
-            title: "Analytics",
-            url: "/dashboard/analytics",
+            title: 'Analytics',
+            url: '/analytics',
           },
           {
-            title: "Reports",
-            url: "/dashboard/reports",
+            title: 'Reports',
+            url: '/reports',
           },
         ],
       },
       {
-        title: "Profile",
-        url: "/profile",
+        title: 'Profile',
+        url: '/profile',
         icon: User,
         items: [
           {
-            title: "Account",
-            url: "/profile",
+            title: 'Account',
+            url: '/profile',
           },
           {
-            title: "Security",
-            url: "/profile/security",
+            title: 'Security',
+            url: '/profile/security',
           },
           {
-            title: "Preferences",
-            url: "/profile/preferences",
+            title: 'Preferences',
+            url: '/profile/preferences',
           },
         ],
       },
       {
-        title: "Documentation",
-        url: "http://localhost:4000/docs",
+        title: 'Documentation',
+        url: 'http:/localhost:4000/docs',
         icon: BookOpen,
         items: [
           {
-            title: "API Reference",
-            url: "http://localhost:4000/docs",
+            title: 'API Reference',
+            url: 'http:/localhost:4000/docs',
           },
           {
-            title: "Getting Started",
-            url: "#",
+            title: 'Getting Started',
+            url: '#',
           },
           {
-            title: "Guides",
-            url: "#",
+            title: 'Guides',
+            url: '#',
           },
         ],
       },
       {
-        title: "Settings",
-        url: "/settings",
+        title: 'Settings',
+        url: '/settings',
         icon: Settings,
         items: [
           {
-            title: "General",
-            url: "/settings",
+            title: 'General',
+            url: '/settings',
           },
           {
-            title: "Notifications",
-            url: "/settings/notifications",
+            title: 'Notifications',
+            url: '/settings/notifications',
           },
           {
-            title: "Integrations",
-            url: "/settings/integrations",
+            title: 'Integrations',
+            url: '/settings/integrations',
           },
         ],
       },
     ],
     projects: [
       {
-        name: "API Integration",
-        url: "#",
+        name: 'API Integration',
+        url: '#',
         icon: BarChart3,
       },
       {
-        name: "User Management",
-        url: "#",
+        name: 'User Management',
+        url: '#',
         icon: User,
       },
       {
-        name: "Documentation",
-        url: "#",
+        name: 'Documentation',
+        url: '#',
         icon: FileText,
       },
     ],
-  }
+  };
 
   return (
     <Sidebar collapsible="icon" {...props}>
@@ -152,5 +152,5 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
-  )
+  );
 }

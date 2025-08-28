@@ -63,7 +63,7 @@ export default function ForgotPasswordPage() {
             </div>
             MVP-TEMPLATE
           </Link>
-          
+
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
@@ -78,7 +78,7 @@ export default function ForgotPasswordPage() {
               <p className="text-sm text-muted-foreground text-center">
                 If you don't see the email, check your spam folder or try again.
               </p>
-              
+
               <div className="space-y-3">
                 <Button
                   variant="outline"
@@ -91,9 +91,7 @@ export default function ForgotPasswordPage() {
                   Try another email
                 </Button>
                 <Button asChild className="w-full">
-                  <Link href="/auth/signin">
-                    Back to sign in
-                  </Link>
+                  <Link href="/signin">Back to sign in</Link>
                 </Button>
               </div>
             </CardContent>
@@ -112,13 +110,11 @@ export default function ForgotPasswordPage() {
           </div>
           MVP-TEMPLATE
         </Link>
-        
+
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Forgot your password?</CardTitle>
-            <CardDescription>
-              No worries, we'll send you reset instructions.
-            </CardDescription>
+            <CardDescription>No worries, we'll send you reset instructions.</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -148,7 +144,7 @@ export default function ForgotPasswordPage() {
 
                 <div className="text-center">
                   <Link
-                    href="/auth/signin"
+                    href="/signin"
                     className="text-sm underline-offset-4 hover:underline text-muted-foreground"
                   >
                     Remember your password? Sign in

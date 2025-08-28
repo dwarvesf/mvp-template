@@ -69,7 +69,7 @@ export default function SignUpPage() {
             </div>
             MVP-TEMPLATE
           </Link>
-          
+
           <Card>
             <CardHeader className="text-center">
               <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
@@ -84,12 +84,10 @@ export default function SignUpPage() {
               <p className="text-sm text-muted-foreground text-center">
                 Please check your email and click the verification link to activate your account.
               </p>
-              
+
               <div className="space-y-3">
                 <Button asChild className="w-full">
-                  <Link href="/auth/signin">
-                    Go to sign in
-                  </Link>
+                  <Link href="/signin">Go to sign in</Link>
                 </Button>
                 <Button
                   variant="outline"
@@ -118,13 +116,11 @@ export default function SignUpPage() {
           </div>
           MVP-TEMPLATE
         </Link>
-        
+
         <Card>
           <CardHeader className="text-center">
             <CardTitle className="text-xl">Create your account</CardTitle>
-            <CardDescription>
-              Enter your information to get started
-            </CardDescription>
+            <CardDescription>Enter your information to get started</CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit(onSubmit)}>
@@ -194,8 +190,8 @@ export default function SignUpPage() {
                 </Button>
 
                 <div className="text-center text-sm">
-                  Already have an account?{" "}
-                  <Link href="/auth/signin" className="underline underline-offset-4">
+                  Already have an account?{' '}
+                  <Link href="/signin" className="underline underline-offset-4">
                     Sign in
                   </Link>
                 </div>
@@ -203,10 +199,10 @@ export default function SignUpPage() {
             </form>
           </CardContent>
         </Card>
-        
+
         <div className="text-balance text-center text-xs text-muted-foreground [&_a]:underline [&_a]:underline-offset-4 [&_a]:hover:text-primary">
-          By creating an account, you agree to our <Link href="#">Terms of Service</Link>{" "}
-          and <Link href="#">Privacy Policy</Link>.
+          By creating an account, you agree to our <Link href="#">Terms of Service</Link> and{' '}
+          <Link href="#">Privacy Policy</Link>.
         </div>
       </div>
     </div>
