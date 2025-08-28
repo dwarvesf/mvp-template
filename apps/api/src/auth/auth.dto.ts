@@ -34,6 +34,14 @@ export class RegisterDto implements CreateUserRequest {
   @IsOptional()
   @IsString()
   name?: string;
+
+  @ApiProperty({
+    description: 'Optional invitation token',
+    required: false,
+  })
+  @IsOptional()
+  @IsString()
+  invitationToken?: string;
 }
 
 export class LoginDto implements LoginRequest {

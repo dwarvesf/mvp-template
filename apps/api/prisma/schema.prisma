@@ -16,6 +16,11 @@ model User {
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   passwordResetToken PasswordResetToken[]
+  ownedOrganizations Organization[]       @relation("OrganizationOwner")
+  organizationMembers OrganizationMember[]
+  userPermissions    UserPermission[]
+  invitationsSent    OrgInvitation[]      @relation("InvitedBy")
+  auditLogs          AuditLog[]
 }
 
 model PasswordResetToken {
@@ -24,4 +29,154 @@ model PasswordResetToken {
   token     String   @unique
   expiresAt DateTime
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// Organization Management
+model Organization {
+  id                  String               @id @default(cuid())
+  name                String
+  slug                String               @unique
+  isDefault           Boolean              @default(false)
+  ownerId             String
+  owner               User                 @relation("OrganizationOwner", fields: [ownerId], references: [id])
+  settings            Json                 @default("{}")
+  createdAt           DateTime             @default(now())
+  updatedAt           DateTime             @updatedAt
+  deletedAt           DateTime?
+  members             OrganizationMember[]
+  invitations         OrgInvitation[]
+  userPermissions     UserPermission[]
+  customRoles         Role[]
+  auditLogs           AuditLog[]
+
+  @@index([ownerId])
+  @@index([slug])
+}
+
+model OrganizationMember {
+  id              String       @id @default(cuid())
+  orgId           String
+  organization    Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  userId          String
+  user            User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  roleId          String
+  role            Role         @relation(fields: [roleId], references: [id])
+  customPermissions Json       @default("{}")
+  joinedAt        DateTime     @default(now())
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  @@unique([orgId, userId])
+  @@index([userId])
+  @@index([orgId])
+  @@index([roleId])
+}
+
+model OrgInvitation {
+  id           String       @id @default(cuid())
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  email        String
+  roleId       String
+  role         Role         @relation(fields: [roleId], references: [id])
+  token        String       @unique
+  invitedById  String
+  invitedBy    User         @relation("InvitedBy", fields: [invitedById], references: [id])
+  expiresAt    DateTime
+  acceptedAt   DateTime?
+  createdAt    DateTime     @default(now())
+
+  @@index([token])
+  @@index([orgId])
+  @@index([email])
+}
+
+// RBAC System
+model Permission {
+  id              String           @id @default(cuid())
+  name            String           @unique
+  resource        String
+  action          String
+  description     String?
+  isSystem        Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  rolePermissions RolePermission[]
+  userPermissions UserPermission[]
+
+  @@index([resource, action])
+}
+
+model Role {
+  id                  String               @id @default(cuid())
+  name                String
+  displayName         String?
+  description         String?
+  isSystem            Boolean              @default(true)
+  isDefault           Boolean              @default(false)
+  orgId               String?
+  organization        Organization?        @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  createdAt           DateTime             @default(now())
+  rolePermissions     RolePermission[]
+  organizationMembers OrganizationMember[]
+  invitations         OrgInvitation[]
+
+  @@unique([name, orgId])
+  @@index([orgId])
+}
+
+model RolePermission {
+  id           String     @id @default(cuid())
+  roleId       String
+  role         Role       @relation(fields: [roleId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission @relation(fields: [permissionId], references: [id], onDelete: Cascade)
+  granted      Boolean    @default(true)
+  createdAt    DateTime   @default(now())
+
+  @@unique([roleId, permissionId])
+  @@index([roleId])
+  @@index([permissionId])
+}
+
+model UserPermission {
+  id           String       @id @default(cuid())
+  orgId        String
+  organization Organization @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  userId       String
+  user         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  permissionId String
+  permission   Permission   @relation(fields: [permissionId], references: [id])
+  granted      Boolean      @default(true)
+  expiresAt    DateTime?
+  createdAt    DateTime     @default(now())
+
+  @@unique([orgId, userId, permissionId])
+  @@index([userId, orgId])
+}
+
+// Feature Flags
+model FeatureFlag {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  enabled   Boolean  @default(false)
+  config    Json     @default("{}")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+// Audit Logging
+model AuditLog {
+  id           String       @id @default(cuid())
+  userId       String
+  user         User         @relation(fields: [userId], references: [id])
+  orgId        String?
+  organization Organization? @relation(fields: [orgId], references: [id], onDelete: Cascade)
+  action       String
+  details      Json
+  createdAt    DateTime     @default(now())
+
+  @@index([userId])
+  @@index([orgId])
+  @@index([action])
+  @@index([createdAt])
 }

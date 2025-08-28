@@ -1,4 +1,4 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException, Inject, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { PrismaService } from '../prisma/prisma.service';
 import * as bcrypt from 'bcrypt';
@@ -9,6 +9,8 @@ import {
   ResetPasswordDto,
 } from './auth.dto';
 import { MailService } from '../mail/mail.service';
+import { OrganizationsService } from '../organizations/organizations.service';
+import { InvitationsService } from '../organizations/invitations.service';
 import { randomBytes } from 'crypto';
 
 @Injectable()
@@ -17,6 +19,10 @@ export class AuthService {
     private prisma: PrismaService,
     private jwtService: JwtService,
     private mailService: MailService,
+    @Inject(forwardRef(() => OrganizationsService))
+    private organizationsService: OrganizationsService,
+    @Inject(forwardRef(() => InvitationsService))
+    private invitationsService: InvitationsService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -28,6 +34,19 @@ export class AuthService {
         name: dto.name || null,
       },
     });
+
+    // Create default organization for the user
+    await this.organizationsService.createDefaultOrganization(user.id, user.name || undefined);
+
+    // If invitation token provided, accept it
+    if (dto.invitationToken) {
+      try {
+        await this.invitationsService.acceptInvitation(dto.invitationToken, user.id);
+      } catch (error) {
+        // Log error but don't fail registration
+        console.error('Failed to accept invitation during signup:', error);
+      }
+    }
 
     await this.mailService.sendVerificationEmail(user.email, user.id);
 
