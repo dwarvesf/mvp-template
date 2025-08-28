@@ -123,7 +123,7 @@ export default function SignUpPage() {
             <CardDescription>Enter your information to get started</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <form onSubmit={handleSubmit(onSubmit)} noValidate>
               <div className="grid gap-6">
                 {error && (
                   <div className="bg-destructive/15 border border-destructive/50 text-destructive px-3 py-2 rounded-lg text-sm">
