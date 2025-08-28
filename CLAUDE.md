@@ -31,6 +31,10 @@ pnpm lint           # ESLint check via Turbo
 pnpm format         # Prettier format via Turbo
 pnpm typecheck      # TypeScript check via Turbo
 
+# Alternative test commands
+pnpm --filter web test    # Run web tests only (Vitest)
+pnpm --filter api test    # Run API tests only (Jest)
+
 # Individual app commands
 pnpm --filter api dev       # Run API only
 pnpm --filter web dev       # Run web only
@@ -70,11 +74,11 @@ pnpm --filter web build     # Build web only
 
 ### Web (Next.js)
 
-- Port 3000, App Router
+- Port 3000, App Router with route groups: `(auth)`, `(protected)`
 - NextAuth with GitHub OAuth and Credentials providers
-- React Query for server state
-- Tailwind CSS for styling
-- React Email for email templates
+- React Query for server state (via @mvp-template/api-client)
+- Tailwind CSS + shadcn/ui components for styling
+- React Email for email templates (verification, password reset)
 
 ### API Client Generation
 
@@ -180,12 +184,14 @@ Strict mode enabled with:
 - `noImplicitOverride`
 - `exactOptionalPropertyTypes`
 
-## Git Hooks
+## Git Hooks & Quality Gates
 
 Husky configured with:
 
-- **commit-msg**: Enforces conventional commits
+- **commit-msg**: Enforces conventional commits via commitlint
 - **pre-commit**: Runs lint, typecheck, and tests
+
+Conventional commit types: `feat:`, `fix:`, `docs:`, `style:`, `refactor:`, `test:`, `chore:`
 
 ## Turbo Configuration
 
