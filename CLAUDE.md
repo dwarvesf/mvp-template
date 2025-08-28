@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MVP-TEMPLATE monorepo with:
+MVP Template monorepo with:
 
 - **Backend**: NestJS API with Swagger, PostgreSQL/Prisma, JWT auth, Resend emails
 - **Frontend**: Next.js 14 app router, NextAuth, Tailwind, React Query
@@ -22,7 +22,7 @@ pnpm codegen        # Generate API client from Swagger (api must be running)
 
 # Database
 make db-up          # Start PostgreSQL container (port 35434)
-make db-migrate     # Run Prisma migrations  
+make db-migrate     # Run Prisma migrations
 make db-seed        # Seed with default user (mvp@example.com / Pwd123!)
 
 # Testing & Quality
@@ -89,7 +89,7 @@ Database URL format: `postgresql://postgres:postgres@localhost:35434/mvp_templat
 
 Prisma schema defines:
 
-- User model with authentication fields  
+- User model with authentication fields
 - PasswordResetToken for password recovery
 
 **Default seeded user**: `mvp@example.com` / `Pwd123!` (created via `make db-seed`)
@@ -104,6 +104,7 @@ Prisma schema defines:
 6. **Token Management**: Access token stored in NextAuth JWT, added to API requests via axios interceptor
 
 ### Available Auth Pages
+
 - `/auth/signin` - Login with GitHub OAuth or email/password
 - `/auth/signup` - User registration (if implemented)
 - `/auth/forgot-password` - Request password reset
@@ -191,7 +192,7 @@ Husky configured with:
 Key task dependencies configured in `turbo.json`:
 
 - **build**: depends on `^build` (dependencies first) + `prisma:generate`
-- **dev**: depends on `^build` + `prisma:generate` 
+- **dev**: depends on `^build` + `prisma:generate`
 - **codegen**: depends on `@mvp-template/api#dev` (API must be running)
 
 Cache outputs configured for build artifacts, test coverage, and generated files.

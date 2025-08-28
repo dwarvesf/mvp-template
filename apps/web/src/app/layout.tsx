@@ -6,7 +6,7 @@ import Providers from './providers';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'MVP-TEMPLATE',
+  title: 'MVP Template',
   description: 'Modern full-stack application template',
 };
 

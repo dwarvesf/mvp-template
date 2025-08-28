@@ -75,7 +75,7 @@ function ResetPasswordForm() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            MVP-TEMPLATE
+            MVP Template
           </Link>
 
           <Card>
@@ -109,7 +109,7 @@ function ResetPasswordForm() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            MVP-TEMPLATE
+            MVP Template
           </Link>
 
           <Card>
@@ -138,7 +138,7 @@ function ResetPasswordForm() {
           <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
             <GalleryVerticalEnd className="size-4" />
           </div>
-          MVP-TEMPLATE
+          MVP Template
         </Link>
 
         <Card>
@@ -214,7 +214,7 @@ export default function ResetPasswordPage() {
               <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
                 <GalleryVerticalEnd className="size-4" />
               </div>
-              MVP-TEMPLATE
+              MVP Template
             </div>
             <Card>
               <CardContent className="p-6">

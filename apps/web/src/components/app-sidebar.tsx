@@ -35,7 +35,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
     },
     teams: [
       {
-        name: 'MVP-TEMPLATE',
+        name: 'MVP Template',
         logo: GalleryVerticalEnd,
         plan: 'Development',
       },

@@ -1,4 +1,4 @@
-# MVP-TEMPLATE
+# MVP Template
 
 A modern, full-stack application template built with Next.js, NestJS, and TypeScript. Perfect for rapidly building MVPs and production-ready applications with enterprise-grade authentication and type-safe APIs.
 
@@ -32,6 +32,7 @@ make dev  # Start development servers
 ```
 
 The `make setup` command will:
+
 - ✅ Install all dependencies
 - ✅ Copy environment files with working defaults
 - ✅ Start PostgreSQL database in Docker
@@ -126,6 +127,7 @@ Use the pre-seeded user to test authentication:
 The template works out-of-the-box, but you can enhance it by adding these optional services:
 
 ### GitHub OAuth (Optional)
+
 1. Create GitHub OAuth App at https://github.com/settings/applications/new
 2. Set callback URL: `http://localhost:3000/api/auth/callback/github`
 3. Add to `apps/web/.env.local`:
@@ -135,6 +137,7 @@ The template works out-of-the-box, but you can enhance it by adding these option
    ```
 
 ### Email Service (Optional)
+
 1. Sign up at https://resend.com
 2. Get your API key
 3. Add to both `.env` files:
@@ -144,12 +147,14 @@ The template works out-of-the-box, but you can enhance it by adding these option
    ```
 
 ### Production Secrets
+
 Before deploying to production, update these in your `.env` files:
+
 ```env
 # API
 JWT_SECRET=your-secure-jwt-secret-here
 
-# Web  
+# Web
 NEXTAUTH_SECRET=your-secure-nextauth-secret-here
 ```
 
@@ -186,7 +191,7 @@ make dev            # Run both apps in parallel
 
 # Building
 make build          # Build all apps for production
-pnpm --filter api build     # Build API only  
+pnpm --filter api build     # Build API only
 pnpm --filter web build     # Build web app only
 
 # Testing & Quality
@@ -259,11 +264,13 @@ The project uses [Orval](https://orval.dev/) to generate type-safe React Query h
 The template provides a complete authentication system with multiple flows:
 
 #### Available Authentication Methods
+
 - **GitHub OAuth**: One-click social login via NextAuth
 - **Email/Password**: Traditional credentials with registration and login
 - **Password Recovery**: Complete forgot/reset password flow
 
 #### Authentication Pages
+
 - `/auth/signin` - Login with GitHub OAuth or email/password
 - `/auth/signup` - User registration with email verification
 - `/auth/forgot-password` - Request password reset
@@ -271,6 +278,7 @@ The template provides a complete authentication system with multiple flows:
 - `/dashboard` - Protected dashboard page
 
 #### Password Reset Flow
+
 1. User enters email on forgot password page
 2. Backend generates secure reset token (1 hour expiry)
 3. Reset link logged to console (dev mode) or sent via email (production)
@@ -278,6 +286,7 @@ The template provides a complete authentication system with multiple flows:
 5. Token validated and password updated securely
 
 #### Technical Implementation
+
 - **JWT Tokens**: Stored in NextAuth session, automatically added to API requests
 - **Password Hashing**: bcrypt with salt rounds for secure storage
 - **Token Security**: Cryptographically secure random tokens for password reset

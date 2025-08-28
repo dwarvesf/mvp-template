@@ -19,10 +19,10 @@ export default function VerifyEmail({ url }: VerifyEmailProps) {
   return (
     <Html>
       <Head />
-      <Preview>Verify your MVP-TEMPLATE email</Preview>
+      <Preview>Verify your MVP Template email</Preview>
       <Body style={main}>
         <Container style={container}>
-          <Heading style={h1}>Welcome to MVP-TEMPLATE!</Heading>
+          <Heading style={h1}>Welcome to MVP Template!</Heading>
           <Text style={text}>Please verify your email address by clicking the button below:</Text>
           <Button style={button} href={url}>
             Verify Email

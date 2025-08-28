@@ -1,7 +1,7 @@
 .PHONY: setup dev build test lint format codegen db-up db-migrate db-seed
 
 setup:          ## Complete initial setup (install deps, copy env files, start db, migrate, seed)
-	@echo "🚀 Setting up MVP-TEMPLATE..."
+	@echo "🚀 Setting up MVP Template..."
 	@echo "📦 Installing dependencies..."
 	pnpm install
 	@echo "📄 Copying environment files..."

@@ -1,6 +1,6 @@
-# Contributing to MVP-TEMPLATE
+# Contributing to MVP Template
 
-We welcome contributions to MVP-TEMPLATE! This guide will help you get started.
+We welcome contributions to MVP Template! This guide will help you get started.
 
 ## 📋 Prerequisites
 
