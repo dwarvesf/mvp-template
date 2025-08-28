@@ -65,7 +65,7 @@ export const validateWithSchema = {
         return {
           success: false,
           data: null,
-          errors: error.errors.reduce((acc: Record<string, string>, err) => {
+          errors: error.issues.reduce((acc: Record<string, string>, err) => {
             if (err.path[0]) {
               acc[err.path[0] as string] = err.message;
             }
@@ -90,7 +90,7 @@ export const validateWithSchema = {
         return {
           success: false,
           data: null,
-          errors: error.errors.reduce((acc: Record<string, string>, err) => {
+          errors: error.issues.reduce((acc: Record<string, string>, err) => {
             if (err.path[0]) {
               acc[err.path[0] as string] = err.message;
             }
