@@ -13,38 +13,52 @@ MVP-TEMPLATE monorepo with:
 ## Essential Commands
 
 ```bash
-# Install dependencies
-pnpm install
-
-# Database setup
-make db-up          # Start PostgreSQL container (port 35434)
-make db-migrate     # Run Prisma migrations
+# Quick Setup (Recommended)
+make setup          # Complete setup: install deps, copy env files, start db, migrate, seed
 
 # Development
-make dev            # Run both apps (web:3000, api:4000)
-                    # Note: Uses pnpm filter with "./apps/*" syntax
+make dev            # Run both apps (web:3000, api:4000) via Turbo
 pnpm codegen        # Generate API client from Swagger (api must be running)
 
+# Database
+make db-up          # Start PostgreSQL container (port 35434)
+make db-migrate     # Run Prisma migrations  
+make db-seed        # Seed with default user (mvp@example.com / Pwd123!)
+
 # Testing & Quality
-pnpm test           # Run all tests (Vitest for web, Jest for api)
-pnpm lint           # ESLint check
-pnpm format         # Prettier format
-pnpm typecheck      # TypeScript check
+pnpm test           # Run all tests via Turbo (Vitest for web, Jest for api)
+pnpm lint           # ESLint check via Turbo
+pnpm format         # Prettier format via Turbo
+pnpm typecheck      # TypeScript check via Turbo
 
 # Individual app commands
 pnpm --filter api dev       # Run API only
 pnpm --filter web dev       # Run web only
 pnpm --filter api prisma:migrate  # Run migrations
+pnpm --filter api prisma:generate # Generate Prisma client
+
+# Building
+pnpm build          # Build all apps via Turbo
+pnpm --filter api build     # Build API only
+pnpm --filter web build     # Build web only
 ```
 
 ## Architecture
 
 ### Monorepo Structure
 
-- Uses pnpm workspaces (no Turborepo)
-- Shared TypeScript config with strict mode enabled
+- **Build System**: Turbo + pnpm workspaces for task orchestration and caching
+- **Workspace Structure**: `apps/*`, `packages/*`, `tools/*`
+- **Shared TypeScript config** with strict mode enabled
 - **Shared Package**: `@mvp-template/shared` for types, constants, utilities
+- **API Client Package**: `@mvp-template/api-client` for generated React Query hooks
 - Path aliases: `@mvp-template/api-client`, `@mvp-template/shared`
+
+### Package Dependencies
+
+- `api` → depends on `@mvp-template/shared`
+- `web` → depends on `@mvp-template/shared` + `@mvp-template/api-client`
+- `api-client` → generated from API's OpenAPI spec via Orval
 
 ### API (NestJS)
 
@@ -75,8 +89,10 @@ Database URL format: `postgresql://postgres:postgres@localhost:35434/mvp_templat
 
 Prisma schema defines:
 
-- User model with authentication fields
+- User model with authentication fields  
 - PasswordResetToken for password recovery
+
+**Default seeded user**: `mvp@example.com` / `Pwd123!` (created via `make db-seed`)
 
 ## Authentication Flow
 
@@ -169,3 +185,13 @@ Husky configured with:
 
 - **commit-msg**: Enforces conventional commits
 - **pre-commit**: Runs lint, typecheck, and tests
+
+## Turbo Configuration
+
+Key task dependencies configured in `turbo.json`:
+
+- **build**: depends on `^build` (dependencies first) + `prisma:generate`
+- **dev**: depends on `^build` + `prisma:generate` 
+- **codegen**: depends on `@mvp-template/api#dev` (API must be running)
+
+Cache outputs configured for build artifacts, test coverage, and generated files.
