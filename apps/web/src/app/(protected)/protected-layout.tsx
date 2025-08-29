@@ -12,38 +12,27 @@ import {
 import { Separator } from '@/components/ui/separator';
 import { SidebarInset, SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 import { usePathname } from 'next/navigation';
-import { useTeams } from '@/contexts/teams-context';
 
 export function ProtectedLayoutClient({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const { teams } = useTeams();
   
   const getBreadcrumbs = () => {
     const parts = pathname.split('/').filter(Boolean);
     
-    if (parts[0] === 'teams') {
-      if (parts[1]) {
-        const team = teams.find(t => t.id === parts[1]);
-        if (parts[2] === 'members') {
-          return {
-            middle: team?.name || 'Team',
-            last: 'Members'
-          };
-        }
-        return {
-          middle: 'Teams',
-          last: team?.name || 'Team'
-        };
-      }
+    if (parts.length === 0) {
       return {
         middle: null,
-        last: 'Teams'
+        last: 'Dashboard'
       };
     }
     
+    // Capitalize first letter of the page name
+    const lastPart = parts[parts.length - 1];
+    const pageName = lastPart ? lastPart.charAt(0).toUpperCase() + lastPart.slice(1) : 'Page';
+    
     return {
-      middle: null,
-      last: 'Dashboard'
+      middle: parts.length > 1 ? 'Pages' : null,
+      last: pageName
     };
   };
   

@@ -2,18 +2,14 @@
 
 import * as React from 'react';
 import {
-  BarChart3,
   BookOpen,
-  FileText,
   Home,
   Settings,
   User,
 } from 'lucide-react';
 
 import { NavMain } from '@/components/nav-main';
-import { NavProjects } from '@/components/nav-projects';
 import { NavUser } from '@/components/nav-user';
-import { TeamSwitcher } from '@/components/team-switcher';
 import {
   Sidebar,
   SidebarContent,
@@ -41,33 +37,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: 'Overview',
             url: '/',
           },
-          {
-            title: 'Analytics',
-            url: '/analytics',
-          },
-          {
-            title: 'Reports',
-            url: '/reports',
-          },
-        ],
-      },
-      {
-        title: 'Teams',
-        url: '/teams',
-        icon: User,
-        items: [
-          {
-            title: 'Manage Teams',
-            url: '/teams',
-          },
-          {
-            title: 'Members',
-            url: '/teams/members',
-          },
-          {
-            title: 'Invitations',
-            url: '/teams/invitations',
-          },
         ],
       },
       {
@@ -83,10 +52,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: 'Security',
             url: '/profile/security',
           },
-          {
-            title: 'Preferences',
-            url: '/profile/preferences',
-          },
         ],
       },
       {
@@ -97,14 +62,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {
             title: 'API Reference',
             url: 'http://localhost:4000/docs',
-          },
-          {
-            title: 'Getting Started',
-            url: '#',
-          },
-          {
-            title: 'Guides',
-            url: '#',
           },
         ],
       },
@@ -117,32 +74,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
             title: 'General',
             url: '/settings',
           },
-          {
-            title: 'Notifications',
-            url: '/settings/notifications',
-          },
-          {
-            title: 'Integrations',
-            url: '/settings/integrations',
-          },
         ],
-      },
-    ],
-    projects: [
-      {
-        name: 'API Integration',
-        url: '#',
-        icon: BarChart3,
-      },
-      {
-        name: 'User Management',
-        url: '#',
-        icon: User,
-      },
-      {
-        name: 'Documentation',
-        url: '#',
-        icon: FileText,
       },
     ],
   };
@@ -150,11 +82,15 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher />
+        <div className="flex items-center gap-2 px-4 py-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
+            <Home className="size-4" />
+          </div>
+          <span className="font-semibold">MVP Template</span>
+        </div>
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />
-        <NavProjects projects={data.projects} />
       </SidebarContent>
       <SidebarFooter>
         <NavUser user={data.user} />
