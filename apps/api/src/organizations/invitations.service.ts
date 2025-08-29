@@ -2,6 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 import { PrismaService } from '../prisma/prisma.service';
 import { AuditService } from '../rbac/services/audit.service';
 import { RoleService } from '../rbac/services/role.service';
+import { MailService } from '../mail/mail.service';
 import { randomBytes } from 'crypto';
 
 @Injectable()
@@ -10,6 +11,7 @@ export class InvitationsService {
     private prisma: PrismaService,
     private auditService: AuditService,
     private roleService: RoleService,
+    private mailService: MailService,
   ) {}
 
   async createInvitation(
@@ -105,8 +107,16 @@ export class InvitationsService {
       { email, role: role.name },
     );
 
-    // In production, send email here
-    // For now, return invitation with URL
+    // Send invitation email
+    await this.mailService.sendInvitationEmail(
+      email,
+      invitation.invitedBy.name || invitation.invitedBy.email,
+      invitation.organization.name,
+      token,
+      role.name,
+    );
+
+    // Return invitation with URL
     return {
       ...invitation,
       inviteUrl: `${process.env.FRONTEND_URL || 'http://localhost:3000'}/invite/${token}`,

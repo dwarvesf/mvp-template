@@ -98,20 +98,12 @@ export class AuthService {
       },
     });
 
-    // TODO: Send email with reset link
-    // For now, log to console for development
-    const resetLink = `http://localhost:3000/auth/reset-password?token=${token}`;
-    console.log('\n========================================');
-    console.log('🔑 PASSWORD RESET LINK (Dev Mode)');
-    console.log('========================================');
-    console.log(`Email: ${user.email}`);
-    console.log(`Reset Link: ${resetLink}`);
-    console.log(`Token: ${token}`);
-    console.log(`Expires: ${expiresAt.toLocaleString()}`);
-    console.log('========================================\n');
-
-    // Uncomment when email service is configured
-    // await this.mailService.sendPasswordResetEmail(user.email, token);
+    // Send password reset email
+    await this.mailService.sendPasswordResetEmail(
+      user.email,
+      token,
+      user.name || undefined,
+    );
 
     return { message: 'If the email exists, a reset link will be sent' };
   }

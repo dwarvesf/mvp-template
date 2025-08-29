@@ -1,11 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
 
-declare module 'next-auth' {
-  interface Session {
-    accessToken?: string;
-  }
-}
-
 export const axiosInstance = async <T = unknown>(
   config: AxiosRequestConfig,
 ): Promise<AxiosResponse<T>> => {
