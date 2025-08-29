@@ -31,6 +31,7 @@ import { Plus, Settings, Trash2, Users, Crown, Shield, Loader2 } from 'lucide-re
 import { useOrganizationsControllerCreateOrganization, useOrganizationsControllerDeleteOrganization, useOrganizationsControllerUpdateOrganization } from '@mvp-template/api-client/src/generated';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function TeamsPage() {
   const { teams, refetch, isLoading } = useTeams();
@@ -114,13 +115,31 @@ export default function TeamsPage() {
     return 'outline';
   };
 
-  if (isLoading) {
-    return (
-      <div className="flex items-center justify-center min-h-[400px]">
-        <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
-      </div>
-    );
-  }
+  const TeamSkeleton = () => (
+    <Card>
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <Skeleton className="h-5 w-32" />
+            <Skeleton className="h-4 w-24" />
+          </div>
+          <Skeleton className="h-6 w-16 rounded-full" />
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-col gap-3">
+          <Skeleton className="h-10 w-full" />
+          <div className="flex items-center justify-between">
+            <Skeleton className="h-4 w-28" />
+            <div className="flex items-center gap-2">
+              <Skeleton className="h-8 w-8" />
+              <Skeleton className="h-8 w-8" />
+            </div>
+          </div>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   return (
     <div className="space-y-6">
@@ -129,12 +148,15 @@ export default function TeamsPage() {
           <h1 className="text-3xl font-bold tracking-tight">Teams</h1>
           <p className="text-muted-foreground">Manage your teams and organizations</p>
         </div>
+        <Link href="/teams/new">
+          <Button>
+            <Plus className="mr-2 h-4 w-4" />
+            Create Team
+          </Button>
+        </Link>
         <Dialog open={createDialogOpen} onOpenChange={setCreateDialogOpen}>
           <DialogTrigger asChild>
-            <Button>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Team
-            </Button>
+            <span />
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
@@ -180,7 +202,14 @@ export default function TeamsPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {teams.map((team) => {
+        {isLoading ? (
+          <>
+            <TeamSkeleton />
+            <TeamSkeleton />
+            <TeamSkeleton />
+          </>
+        ) : teams.length > 0 ? (
+          teams.map((team) => {
           const RoleIcon = getRoleIcon(team.role);
           return (
             <Card key={team.id}>
@@ -198,10 +227,10 @@ export default function TeamsPage() {
               </CardHeader>
               <CardContent>
                 <div className="flex flex-col gap-3">
-                  <Link href={`/teams/${team.id}/members`}>
+                  <Link href={`/teams/${team.id}`}>
                     <Button variant="outline" className="w-full">
-                      <Users className="mr-2 h-4 w-4" />
-                      Manage Members
+                      <Settings className="mr-2 h-4 w-4" />
+                      Manage Team
                     </Button>
                   </Link>
                   <div className="flex items-center justify-between">
@@ -287,24 +316,26 @@ export default function TeamsPage() {
               </CardContent>
             </Card>
           );
-        })}
+        }))
+        : (
+          <Card className="md:col-span-2 lg:col-span-3">
+            <CardContent className="flex flex-col items-center justify-center py-12">
+              <Users className="h-12 w-12 text-muted-foreground mb-4" />
+              <h3 className="text-lg font-semibold mb-2">No teams yet</h3>
+              <p className="text-muted-foreground text-center mb-4">
+                Create your first team to start collaborating
+              </p>
+              <Link href="/teams/new">
+                <Button>
+                  <Plus className="mr-2 h-4 w-4" />
+                  Create Your First Team
+                </Button>
+              </Link>
+            </CardContent>
+          </Card>
+        )}
       </div>
 
-      {teams.length === 0 && (
-        <Card>
-          <CardContent className="flex flex-col items-center justify-center py-12">
-            <Users className="h-12 w-12 text-muted-foreground mb-4" />
-            <h3 className="text-lg font-semibold mb-2">No teams yet</h3>
-            <p className="text-muted-foreground text-center mb-4">
-              Create your first team to start collaborating
-            </p>
-            <Button onClick={() => setCreateDialogOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" />
-              Create Your First Team
-            </Button>
-          </CardContent>
-        </Card>
-      )}
     </div>
   );
 }
