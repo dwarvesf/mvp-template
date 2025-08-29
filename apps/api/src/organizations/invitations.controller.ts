@@ -60,6 +60,7 @@ export class InvitationsController {
   @ApiResponse({ status: 200, description: 'Invitation revoked' })
   @ApiResponse({ status: 400, description: 'Cannot revoke accepted invitation' })
   async revokeInvitation(
+    @Param('orgId') orgId: string,
     @Param('invitationId') invitationId: string,
     @Req() req: AuthenticatedRequest,
   ) {

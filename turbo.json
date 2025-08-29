@@ -53,7 +53,7 @@
     "codegen": {
       "cache": false,
       "outputs": ["packages/api-client/src/generated.ts"],
-      "dependsOn": ["@mvp-template/api#dev"]
+      "dependsOn": []
     }
   }
 }

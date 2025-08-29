@@ -1,12 +1,10 @@
 'use client';
 
 import * as React from 'react';
-import { useSession } from 'next-auth/react';
 import {
   BarChart3,
   BookOpen,
   FileText,
-  GalleryVerticalEnd,
   Home,
   Settings,
   User,
@@ -25,21 +23,13 @@ import {
 } from '@/components/ui/sidebar';
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
-  const { data: session } = useSession();
-
+  // Static data - session data will be handled in child components
   const data = {
     user: {
-      name: session?.user?.name || session?.user?.email?.split('@')[0] || 'User',
-      email: session?.user?.email || '',
-      avatar: session?.user?.image || '/avatars/default.jpg',
+      name: 'User',
+      email: '',
+      avatar: '/avatars/default.jpg',
     },
-    teams: [
-      {
-        name: 'MVP Template',
-        logo: GalleryVerticalEnd,
-        plan: 'Development',
-      },
-    ],
     navMain: [
       {
         title: 'Dashboard',
@@ -58,6 +48,25 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           {
             title: 'Reports',
             url: '/reports',
+          },
+        ],
+      },
+      {
+        title: 'Teams',
+        url: '/teams',
+        icon: User,
+        items: [
+          {
+            title: 'Manage Teams',
+            url: '/teams',
+          },
+          {
+            title: 'Members',
+            url: '/teams/members',
+          },
+          {
+            title: 'Invitations',
+            url: '/teams/invitations',
           },
         ],
       },
@@ -82,12 +91,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       },
       {
         title: 'Documentation',
-        url: 'http:/localhost:4000/docs',
+        url: 'http://localhost:4000/docs',
         icon: BookOpen,
         items: [
           {
             title: 'API Reference',
-            url: 'http:/localhost:4000/docs',
+            url: 'http://localhost:4000/docs',
           },
           {
             title: 'Getting Started',
@@ -141,7 +150,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
+        <TeamSwitcher />
       </SidebarHeader>
       <SidebarContent>
         <NavMain items={data.navMain} />

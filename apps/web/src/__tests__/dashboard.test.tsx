@@ -63,6 +63,7 @@ describe('Dashboard', () => {
   it('renders dashboard when authenticated', () => {
     const mockSession = {
       user: {
+        id: 'user-123',
         name: 'John Doe',
         email: 'john@example.com'
       },

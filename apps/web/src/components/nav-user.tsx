@@ -1,6 +1,6 @@
 "use client"
 
-import { signOut } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 import {
   BadgeCheck,
   Bell,
@@ -32,7 +32,7 @@ import {
 import { CaretSortIcon } from "@radix-ui/react-icons"
 
 export function NavUser({
-  user,
+  user: defaultUser,
 }: {
   user: {
     name: string
@@ -41,6 +41,14 @@ export function NavUser({
   }
 }) {
   const { isMobile } = useSidebar()
+  const { data: session } = useSession()
+  
+  // Use session data if available, otherwise use default
+  const user = session?.user ? {
+    name: session.user.name || session.user.email?.split('@')[0] || 'User',
+    email: session.user.email || '',
+    avatar: session.user.image || '/avatars/default.jpg',
+  } : defaultUser
 
   const handleSignOut = async () => {
     await signOut({ callbackUrl: '/' });
